@@ -51,6 +51,11 @@ function LivingStandard()
         <Select styles={customStyles} options={Options} value={defaultOption} placeholder="Select" maxMenuHeight={he}/>
          </div>
         <div className='city-field'></div>
+        <form className="ref-city-form">
+            <input className="ref-city-input" type="text" placeholder="Reference city" />
+            <input  className="ref-city-submit"type="submit" />
+            </form>
+        
         </div>
         </div>
     );

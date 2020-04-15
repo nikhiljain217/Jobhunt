@@ -5,19 +5,20 @@ img{
 .place-container{
     background:#f9f9f9;
     display:flex;
-    margin:5px 5px;
+    /* margin:5px 5px; */
     flex-direction:column;
+    padding: 5px 5px;
 }
     
-.elements
+.place-elements
 {
     display:grid;
-    grid-template-columns: 40% 40% auto;
+    grid-template-columns: 40% 35% 20%;
     grid-template-rows: 40% 50% auto;
     column-gap:20px;
     row-gap:20px;
     width: 92vw;
-    height: 70vh;
+    height: 70vh; 
     flex:2;
     align-self: flex-start;
 }    
@@ -31,7 +32,7 @@ h1{
     grid-column-end: 2;
     grid-row-start:1;
     grid-row-end:2;
-    font-weight: 500;
+    font-weight: 600; 
     padding:5px 5px;
     overflow: hidden;
     text-align: justify;
@@ -49,7 +50,10 @@ h1{
     grid-row-start:1;
     grid-row-end:2;
     padding:5px 5px;
+    padding-top: 20px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     overflow:auto;
+    border-radius: 10px;
     
 }
 
@@ -59,10 +63,14 @@ h1{
     grid-column-end: 4;
     grid-row-start:1;
     grid-row-end:3;
-    
-    background: #ffffff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    /* background-color: #15202a; */
+/*     margin-left: 25rem;
+    margin-bottom: 0.1rem; */
+    background: #ffffff; 
     padding:5px 5px;
     overflow:auto;
+    border-radius: 10px;
 }
 
 .expenses
@@ -73,8 +81,10 @@ h1{
     grid-row-start:2;
     grid-row-end:3;
     background: #ffffff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     padding:5px 5px;
     overflow:auto;
+    border-radius: 10px;
 }
 
 .corona
@@ -85,8 +95,10 @@ h1{
     grid-row-start:2;
     grid-row-end:3;
     background: #ffffff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     padding:5px 5px;
     overflow:auto;
+    border-radius: 10px;
 }
 
 .living-bar
@@ -100,7 +112,8 @@ h1{
 {
     align-self: start;
     flex:1;
-    padding:10px 10px 10px 10px;
+    padding:20px 10px 10px 10px;
+
 }
 
 .living-select
@@ -122,5 +135,36 @@ h1{
 
 .city-field
 {
-    flex:2
+    
+    align-self:flex-start;
+    flex:1;
+}
+
+
+.ref-city-input
+{
+    width:97%;
+    height:175%;
+    border-radius: 5px;
+    font-weight: 500;
+
+}
+
+.ref-city-input:hover
+{
+    border:#0077B5 solid 1px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.ref-city-input:focus
+{
+    border:#0077B5 solid 3px;
+    border-radius: 5px;
+}
+
+.ref-city-submit
+{
+    display:none;
+    
 }

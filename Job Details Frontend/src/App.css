@@ -34,23 +34,15 @@
 
 .tab-container{
   position: relative;
-  background:  #0077B5;
+  /* background:  #0077B5; */
+  background:white;
   width: 5vw;
   display:flex;
   flex-direction:column;
-
+  border-top: solid #ccc 1px;
   height: 128vh;
   float: left;
   z-index: 20;
-}
-.icons-line
-{
-  flex:1;
-  color:"#CACCCE";
-  :hover {
-		color: #ed1212;
-		cursor: pointer;
-  }
 }
 
 
@@ -59,12 +51,19 @@
 .search-bar{
   position: relative;
   background:  #0077B5;
+  /* background: white; */
   width: 100vw;
   height: 10vh;
   float: left;
   z-index: 20;
+  
+
 }
 
+.icon-line
+{
+  background:white
+}
 .main-window{
   background: #f9f9f9;
   width: 92vw;
@@ -73,6 +72,8 @@
   
   
 }
+
+
 
 @keyframes App-logo-spin {
   from {

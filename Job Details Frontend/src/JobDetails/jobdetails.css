@@ -1,0 +1,103 @@
+.job-container{
+    background:#f9f9f9;
+    display:flex;
+    margin:10px 10px;
+    flex-direction:column;
+}
+ 
+.top-row{
+    flex:1;
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+
+}
+
+
+h1
+{
+    color:#313335;
+}
+
+.job-heading
+{
+    flex:4;
+}
+
+.save-button{
+    flex:1;
+    
+    height:11vh;
+    
+    align-self:flex-end;
+    
+    
+    padding:10px;
+    
+    margin-top: 1vh;
+    
+    
+}
+
+.apply-button{
+    flex:1;
+    
+    height:11vh;
+    
+    align-self:flex-start;
+    justify-content: center;
+    padding:10px;
+    
+    margin-top: 1vh;
+}
+
+.job-details-elements
+{
+    display:grid;
+    grid-template-columns: 70% 25%;
+    grid-template-rows: 80% 10% auto;
+    column-gap:20px;
+    row-gap:20px;
+    width: 92vw;
+    height: 70vh; 
+    flex:5;
+    align-self: flex-start;
+}    
+
+
+
+
+.job-details
+{
+    grid-column:1/2;
+    grid-row:1/2;
+    padding:5px 5px;
+    overflow:hidden;
+    font-weight: 500;
+    padding:5px 5px;
+    overflow: auto;
+    text-align: justify;
+    white-space: pre-line;
+    text-overflow:ellipsis;
+}
+
+.avg-salary
+{
+    grid-column:1/2;
+    grid-row:2/3;
+    background: #ffffff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    padding:5px 5px;
+    overflow:hidden;
+}
+
+.other-company-body
+{
+    grid-column:2/3;
+    grid-row:1/3;
+    background: #ffffff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    padding:5px 5px;
+    overflow:auto;
+    border-radius: 10px;
+}

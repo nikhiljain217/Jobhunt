@@ -1,27 +1,41 @@
 import React, { Component } from 'react';
-
-import logo from './logo.svg';
-import { MdWork, MdHome} from 'react-icons/md';
-import {FaBriefcase} from 'react-icons/fa'
-import {IoIosBriefcase} from 'react-icons/io'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Place from './Place/place.js';
+import Company from './Company/company.js';
+import JobDetail from './JobDetails/jobdetails.js';
+import SideTab from './side-tab.js'
 import './App.css';
+
+
+
 export default class App extends React.Component {
+  
   render() {
+    const Home = () =>
+    {
+      return(
+        <div><h1>Home Page</h1></div>
+
+
+      );
+    }
   return (
     <div>
       <div className="search-bar">
         </div>
-        <div className="tab-container">
-          <center>
-        <div className="icon-line.css"><IoIosBriefcase size="50px" /></div>
-        <div className="icon-line"><IoIosBriefcase size="50px" /></div>
-        </center>
-        </div>
-        <div className="main-window">
-        <Place />
         
-     </div>
+        
+        <Router>
+        < SideTab />
+          <div className="main-window">
+          <Route path ='/' exact component ={Home} />
+          <Route path = "/place" component={Place} />
+          <Route path = "/company" component={Company} />
+          <Route path = "/jobdetails" component={JobDetail} />
+          </div> 
+        </Router>
+        
+     
       
      </div>
   );
