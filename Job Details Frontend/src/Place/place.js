@@ -1,8 +1,6 @@
 import React from 'react';
 import PlaceImage from './placeImage';
 import LivingStandard from './living'
-import { FaBeer } from 'react-icons/fa'
-import { Grid, Cell } from "styled-css-grid";
 import './Place.css'
 
 function Place()
