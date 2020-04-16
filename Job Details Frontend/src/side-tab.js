@@ -3,10 +3,11 @@ import { MdLocationOn, MdHome} from 'react-icons/md';
 import {FaBriefcase} from 'react-icons/fa'
 import {IoIosBriefcase} from 'react-icons/io'
 import './App.css';
-import {NavLink,Link} from 'react-router-dom'
+import {NavLink, useRouteMatch} from 'react-router-dom'
 
 const SideTab = () =>
 {
+    let match = useRouteMatch();
     const linkStyle=
     {
         color:'#CACCCE'
@@ -20,21 +21,19 @@ const SideTab = () =>
     return(
     <div className="tab-container">
           <center>
-
-        
-        <NavLink style={linkStyle} to="/jobdetails" activeStyle={aStyle}>
-        <div className="icon-line">      <IoIosBriefcase size="40px" />
-        </div>
+              
+        <NavLink style={linkStyle} to={`${match.path}/jobdetails`} activeStyle={aStyle}>
+        <div className="icon-line"><IoIosBriefcase size="40px" /></div>
         </NavLink>
         
-        
-        <NavLink style={linkStyle} to="/company" activeStyle={aStyle}>
+        <NavLink style={linkStyle} to={`${match.path}/company`} activeStyle={aStyle}>
         <div className="icon-line"><IoIosBriefcase size="40px" /></div>
         </NavLink>
         
         
-        <NavLink style={linkStyle} to="/place" activeStyle={aStyle}>
+        <NavLink style={linkStyle} to={`${match.path}/place`} activeStyle={aStyle}>
         <div className="icon-line"><MdLocationOn size="40px" /></div>
+
         </NavLink>
         
         </center>
