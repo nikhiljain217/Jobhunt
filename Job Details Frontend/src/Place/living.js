@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import Select from 'react-select'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
@@ -10,13 +10,89 @@ function LivingStandard()
     
     const percentage = 66;
     
-    const Options =[
-    {value:'cost of living',label:'Cost of Living'},
-    {value:'commute',label:'Commute'},
-    {value:'safety',label:'Safety'},
-    {value:'taxation',label:'Taxation'},
-    {value:'environmental quality',label:'Environmental Quality'}];
-    const defaultOption = Options[0];
+    ;
+    
+
+    const [cityStandard,setCityStandard] = useState([
+                    {value:0,label:'Cost of Living'},
+                    {value:0,label:'Commute'},
+                    {value:0,label:'Safety'},
+                    {value:0,label:'Taxation'},
+                    {value:0,label:'Environmental Quality'}]);
+
+    const [referenceCityStandard,setReferenceCityStandard] = useState([
+                    {value:0,label:'Cost of Living'},
+                    {value:0,label:'Commute'},
+                    {value:0,label:'Safety'},
+                    {value:0,label:'Taxation'},
+                    {value:0,label:'Environmental Quality'}]);
+    const [cityRating,setCityRating] = useState(0);
+    const [referenceCityRating,setReferenceCityRating] = useState(0);
+    const [search, setSearch] = useState('')
+    const [referenceCity,setReferenceCity] =useState('Boulder');
+    const [selectedParameter,setSelectedParameter] = useState({value:0,label:''});
+    useEffect(()=>{
+        getCityStandard();
+        getReferenceStandard();},[referenceCity,referenceCityRating]);
+
+    const getCityStandard = async () => {
+      
+      const response = await fetch('http://127.0.0.1:8000/living/Seattle');
+      const data = await response.json();
+      
+      cityStandard.map(option =>{
+          option.value = data[option.label]
+      });
+      
+
+    }
+
+    const getReferenceStandard = async () => {
+      
+
+        const response = await fetch(`http://127.0.0.1:8000/living/${referenceCity}`);
+        const data = await response.json();
+        
+        referenceCityStandard.map(option =>{
+            option.value = data[option.label]
+        });
+  
+      }
+
+    const updateSearch = e =>
+    {
+        setSearch(e.target.value);
+    }
+
+    const handleform = e =>
+    {
+        e.preventDefault();
+        setReferenceCity(search);
+        console.log("Before")
+        getReferenceStandard();
+        console.log("After")
+        handleChange(selectedParameter);
+        setSearch('');
+
+        
+    }
+
+    const handleChange =(selectedOption) =>
+    {
+        
+        setSelectedParameter({value:selectedOption.value,label:selectedOption.label});
+        console.log(selectedParameter); 
+        console.log(selectedOption); 
+        setCityRating(selectedOption.value*10);
+        referenceCityStandard.map(
+            option => {
+                if(option.label == selectedOption.label)
+                {
+                    setReferenceCityRating(option.value*10)
+                }
+            }
+        )
+    }
     const he =90;
 
     const customStyles = {
@@ -35,24 +111,24 @@ function LivingStandard()
     return(
          <div className="living-bar">
         <div className="living-ind">
-        <CircularProgressbarWithChildren styles={buildStyles(circleStyle)} value={percentage}     >
+        <CircularProgressbarWithChildren styles={buildStyles(circleStyle)} value={cityRating} >
         <div style={{ fontSize: 12, marginTop: -5 }}>
-    <strong>Seattle</strong> 66%</div>
+    <strong>Seattle</strong> <br />{`${cityRating / 10}/10`}</div>
         </CircularProgressbarWithChildren>
         </div>
         <div className="living-ind">
-        <CircularProgressbarWithChildren styles={buildStyles(circleStyle)} value={percentage}     >
+        <CircularProgressbarWithChildren styles={buildStyles(circleStyle)} value= {referenceCityRating}     >
         <div style={{ fontSize: 12, marginTop: -5 }}>
-    <strong>Boulder</strong> 66%</div>
+    <strong>{referenceCity}</strong><br /> {`${referenceCityRating / 10}/10`}</div>
         </CircularProgressbarWithChildren>
         </div>
         <div className="living-select">
         <div className='drop-list'> 
-        <Select styles={customStyles} options={Options} value={defaultOption} placeholder="Select" maxMenuHeight={he}/>
+        <Select styles={customStyles} onChange={handleChange} options={cityStandard} placeholder="Select" maxMenuHeight={he}/>
          </div>
         <div className='city-field'></div>
-        <form className="ref-city-form">
-            <input className="ref-city-input" type="text" placeholder="Reference city" />
+        <form onSubmit={handleform} className="ref-city-form">
+            <input className="ref-city-input" onChange={updateSearch}  type="text" value={search} placeholder="Reference city" />
             <input  className="ref-city-submit"type="submit" />
             </form>
         

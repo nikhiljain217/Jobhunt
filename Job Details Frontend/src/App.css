@@ -64,6 +64,11 @@
 {
   background:white
 }
+
+.icon-line:hover
+{
+  color:#0088cf;
+}
 .main-window{
   background: #f9f9f9;
   width: 92vw;
@@ -73,6 +78,10 @@
   
 }
 
+.tab-active
+{
+  background:f9f9f9 ;
+}
 
 
 @keyframes App-logo-spin {

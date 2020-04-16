@@ -1,0 +1,17 @@
+.rental-body
+{
+    display:block;
+    height:60px;
+}
+
+h2
+{
+    color:#313335;
+    flex:1;
+}
+.rental-list
+{
+    flex:4;
+    height:400px;
+
+}

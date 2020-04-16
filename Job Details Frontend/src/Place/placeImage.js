@@ -1,22 +1,31 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import './Place.css'
  function PlaceImage()
  {
-    const getImage = async () => {
-      console.log("insidethis");  
-      const response = await fetch('http://127.0.0.1:8000/place');
-      const data = await response.json();
-      console.log(data);
 
-    };
+    const [imgUrl,setImgUrl] = useState("");
 
     useEffect(()=>{
-    getImage();
-    },[]);
+        getImage();
+        },[imgUrl],[]);
+
+    const getImage = async () => {
+      
+      const response = await fetch('http://127.0.0.1:8000/place');
+      const data = await response.json();
+      
+      setImgUrl(data['url']);
+      
+      
+
+
+    };
+    
+    
 
     return(
         
-        <img class='placeImage' src ="https://d13k13wj6adfdf.cloudfront.net/urban_areas/seattle_web-e07e580eca.jpg" />
+        <img class='placeImage' src ={imgUrl} />
         
     );
 }

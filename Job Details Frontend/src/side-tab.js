@@ -20,18 +20,21 @@ const SideTab = () =>
     return(
     <div className="tab-container">
           <center>
-              
+
+        
         <NavLink style={linkStyle} to="/jobdetails" activeStyle={aStyle}>
-        <div className="icon-line"><IoIosBriefcase size="50px" /></div>
+        <div className="icon-line">      <IoIosBriefcase size="40px" />
+        </div>
         </NavLink>
         
+        
         <NavLink style={linkStyle} to="/company" activeStyle={aStyle}>
-        <div className="icon-line"><IoIosBriefcase size="50px" /></div>
+        <div className="icon-line"><IoIosBriefcase size="40px" /></div>
         </NavLink>
         
         
         <NavLink style={linkStyle} to="/place" activeStyle={aStyle}>
-        <div className="icon-line"><MdLocationOn size="50px" /></div>
+        <div className="icon-line"><MdLocationOn size="40px" /></div>
         </NavLink>
         
         </center>
