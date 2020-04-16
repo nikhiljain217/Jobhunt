@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Place from './Place/place.js';
 import Company from './Company/company.js';
 import JobDetail from './JobDetails/jobdetails.js';
+import SearchBar from './SearchBar';
 import SideTab from './side-tab.js'
 import './App.css';
 
@@ -21,9 +22,7 @@ export default class App extends React.Component {
     }
   return (
     <div>
-      <div className="search-bar">
-        </div>
-        
+        <SearchBar />
         
         <Router>
         < SideTab />
@@ -34,8 +33,6 @@ export default class App extends React.Component {
           <Route path = "/jobdetails" component={JobDetail} />
           </div> 
         </Router>
-        
-     
       
      </div>
   );
