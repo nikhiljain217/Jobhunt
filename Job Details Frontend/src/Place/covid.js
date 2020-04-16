@@ -2,8 +2,11 @@ import React from 'react';
 
 function CovidCase()
 {
-    return
-    }
+    return (
+        <div>
+        </div>
+    );
+}
             
 
 
