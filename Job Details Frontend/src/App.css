@@ -45,45 +45,6 @@
   z-index: 20;
 }
 
-
-
-
-.search-bar{
-  position: relative;
-  background:  #0077B5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background: white; */
-  width: 100vw;
-  height: 10vh;
-  z-index: 20;
-}
-
-.search-control {
-  width: 50%;
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.search-control input {
-  outline: none;
-  height: 100%;
-  width: 100%
-}
-
-.search-control input#search-string {
-  border-radius: 5px 0 0 5px;
-  border-right: 0;
-}
-
-.search-control input#search-location {
-  border-radius: 0 5px 5px 0;
-  border-left: 1px solid grey;
-}
-
 .icon-line
 {
   background:white
