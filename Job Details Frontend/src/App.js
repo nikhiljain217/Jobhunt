@@ -5,6 +5,7 @@ import Company from './Company/company.js';
 import JobDetail from './JobDetails/jobdetails.js';
 import SearchBar from './SearchBar';
 import SideTab from './side-tab.js'
+import JobListings from './JobListings';
 import './App.css';
 
 
@@ -25,7 +26,7 @@ export default class App extends React.Component {
       <div>
         <SearchBar />
         <Route path='/' exact component={Home} />
-        <Route path='/jobs' component={Listings} />
+        <Route path='/jobs' component={JobListings} />
         <Route path="/details" component={Details} />
       </div>
     </Router>
@@ -45,18 +46,8 @@ function Details() {
         <Route path={`${match.path}/company`} component={Company} />
         <Route path={`${match.path}/place`} component={Place} />
         <Route path={`${match.path}/jobdetails`} component={JobDetail} />
+        <Route path={`${match.path}`} component={JobDetail} />
       </Switch>
-    </div>
-  );
-}
-
-function Listings() {
-  return (
-    <div>
-      <h1>This is the listings page</h1>
-      <Link to='/details'>
-        <p>Lotta Money!</p>
-      </Link>
     </div>
   );
 }

@@ -18,26 +18,24 @@ const SideTab = () =>
         color:'#0077B5'
     }
     ;
-    return(
-    <div className="tab-container">
-          <center>
-              
-        <NavLink style={linkStyle} to={`${match.path}/jobdetails`} activeStyle={aStyle}>
-        <div className="icon-line"><IoIosBriefcase size="40px" /></div>
-        </NavLink>
-        
-        <NavLink style={linkStyle} to={`${match.path}/company`} activeStyle={aStyle}>
-        <div className="icon-line"><IoIosBriefcase size="40px" /></div>
-        </NavLink>
-        
-        
-        <NavLink style={linkStyle} to={`${match.path}/place`} activeStyle={aStyle}>
-        <div className="icon-line"><MdLocationOn size="40px" /></div>
+    return (
+        <div className="tab-container">
+            <center>
+                <NavLink style={linkStyle} to={`${match.path}/jobdetails`} activeStyle={aStyle}>
+                    <div className="icon-line"><IoIosBriefcase size="40px" /></div>
+                </NavLink>
 
-        </NavLink>
-        
-        </center>
-        </div>)
+                <NavLink style={linkStyle} to={`${match.path}/company`} activeStyle={aStyle}>
+                    <div className="icon-line"><IoIosBriefcase size="40px" /></div>
+                </NavLink>
+
+                <NavLink style={linkStyle} to={`${match.path}/place`} activeStyle={aStyle}>
+                    <div className="icon-line"><MdLocationOn size="40px" /></div>
+                </NavLink>
+
+            </center>
+        </div>
+    )
 }
 
 export default SideTab;
