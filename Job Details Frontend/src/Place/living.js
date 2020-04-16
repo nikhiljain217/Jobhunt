@@ -1,8 +1,7 @@
 
 import React,{useState, useEffect} from 'react';
 import Select from 'react-select'
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 function LivingStandard()

@@ -3,6 +3,8 @@ import PlaceImage from './placeImage';
 import LivingStandard from './living'
 import RentalRecords from './rents'
 import CovidCase from './covid'
+
+
 import './Place.css'
 
 function Place()

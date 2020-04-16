@@ -45,21 +45,6 @@
   z-index: 20;
 }
 
-
-
-
-.search-bar{
-  position: relative;
-  background:  #0077B5;
-  /* background: white; */
-  width: 100vw;
-  height: 10vh;
-  float: left;
-  z-index: 20;
-  
-
-}
-
 .icon-line
 {
   background:white
@@ -78,9 +63,17 @@
   
 }
 
+
 .tab-active
 {
   background:f9f9f9 ;
+}
+
+.job-results {
+  display:flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: flex-start
 }
 
 
