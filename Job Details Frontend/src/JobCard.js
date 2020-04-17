@@ -1,4 +1,5 @@
 import React from 'react';
+import './JobCard.css'
 
 function JobCard({title,company,location,datePosted,url}) {
 
@@ -8,7 +9,6 @@ function JobCard({title,company,location,datePosted,url}) {
             <h4>{company}</h4>
             <h4>{location}</h4>
             <h4>{datePosted}</h4>
-            <h4>{url}</h4>
         </div>
     );
 

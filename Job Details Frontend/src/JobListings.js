@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import JobCard from './JobCard';
-import {Link} from 'react-router-dom';
+import './JobListings.css'
 
 function JobListings({match}) {
 
