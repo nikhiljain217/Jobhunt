@@ -5,7 +5,7 @@ import json
 app=Flask(__name__)
 
 @app.route('/place/image/<name>')
-def index(name):
+def image_api(name):
     link=str('https://api.teleport.org/api/urban_areas/slug:')+name+str('/images/')
     result=requests.get(link)
     python_obj = json.loads(result.text)
@@ -15,7 +15,7 @@ def index(name):
     return image_link
 
 @app.route('/place/scores/<name>')
-def index_new(name):
+def place_score_api(name):
     link=str('https://api.teleport.org/api/urban_areas/slug:')+name+str('/scores/')
     result=requests.get(link)
     python_obj = json.loads(result.text)
@@ -29,7 +29,7 @@ def index_new(name):
     return flask.jsonify(result)
 
 @app.route('/description/<name>')
-def index_2(name):
+def description_api(name):
     link=str('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=1&explaintext=1&titles=')+name
     result=requests.get(link)
     python_obj = json.loads(result.text)
@@ -40,4 +40,23 @@ def index_2(name):
     result={}
     result['description']=temp
     result['url']='https://en.wikipedia.org/wiki/'+name
+    return flask.jsonify(result)
+
+@app.route('/job/<keyword>/<place>/<max_results>')
+def job_api(keyword,place,max_results):
+    link=str('https://api.adzuna.com/v1/api/jobs/us/search/1?app_id={APP_ID}&app_key={APP_KEY}}&results_per_page='+max_results+'&where='+place+'&what='+keyword+'&content-type=application/json')
+    result=requests.get(link)
+    python_obj = json.loads(result.text)
+    result={}
+    no_results=len(python_obj['results'])
+    for i in range(no_results):
+        temp=python_obj['results'][i]['title']
+        temp=temp.replace('<strong>','')
+        temp=temp.replace('</strong>','')       # Title of the job
+        temp1=python_obj['results'][i]['created']  # Ad creation date and time
+        temp2=python_obj['results'][i]['location']['display_name']    # Place Information
+        temp3=python_obj['results'][i]['redirect_url']  # Redirect URL
+        temp4 =python_obj['results'][i]['description']  # Brief intro abt the job
+        temp5 =python_obj['results'][i]['company']['display_name']  # Company name
+        result[i]={'title':temp,'date':temp1,'place':temp2,'url':temp3,'description':temp4,'company':temp5}
     return flask.jsonify(result)
