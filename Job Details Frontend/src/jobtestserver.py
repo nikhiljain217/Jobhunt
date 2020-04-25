@@ -61,8 +61,9 @@ def get_jobs(searchstring, location):
     # make request to adzuna api
     escaped_string = quote(searchstring)
     escaped_location = quote(location)
-    apiUrl = "http://api.adzuna.com/v1/api/jobs/us/search/1?app_id={0}&app_key={1}&results_per_page=20&what={2}&where={3}&content-type=application/json"
-    requestUrl = apiUrl.format(appid,appsecret,escaped_string,escaped_location)
+    whereParam = "" if location == "United States" else "&where={0}".format(escaped_location)
+    apiUrl = "http://api.adzuna.com/v1/api/jobs/us/search/1?app_id={0}&app_key={1}&results_per_page=20&what={2}{3}&content-type=application/json"
+    requestUrl = apiUrl.format(appid,appsecret,escaped_string,whereParam)
     response = clean_response(requests.get(requestUrl).json())
 
     # return response

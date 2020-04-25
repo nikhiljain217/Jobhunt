@@ -23,7 +23,7 @@ function SearchBar() {
             <div className="search-control">
                 <input type="text" id="search-string" placeholder="Search" onChange={updateSearchString}></input>
                 <input type="text" id="search-location" placeholder="Location (state/zip code)" onChange={updateLocation}></input>
-                <Link to={`/jobs/${searchString}/${location}`}>
+                <Link to={`/jobs/${searchString}/${location == "" ? "United States" : location}`}>
                     <div className="search-icon"><FaSearch size="38px"/></div>
                 </Link>
             </div>
