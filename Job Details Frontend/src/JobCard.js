@@ -1,7 +1,7 @@
 import React from 'react';
 import './JobCard.css'
 
-function JobCard({title,company,location,datePosted,url,city}) {
+function JobCard({title,company,location,datePosted,url,city,description}) {
 
     const getDateString = () => {
         // convert date to diff
