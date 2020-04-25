@@ -1,10 +1,10 @@
 import React from 'react';
 import './JobCard.css'
 
-function JobCard({title,company,location,datePosted,url}) {
+function JobCard({title,company,location,datePosted,url,city}) {
 
     const getDateString = () => {
-        // your code goes here
+        // convert date to diff
         var date = new Date(datePosted);
         var time = Date.now();
 

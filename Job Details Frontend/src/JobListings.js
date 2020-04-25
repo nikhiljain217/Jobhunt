@@ -33,6 +33,7 @@ function JobListings({match}) {
                             location={item.location.display_name}
                             datePosted={item.created}
                             url={item.redirect_url}
+                            city={item.city}
                         />
                     </Link>
                 )

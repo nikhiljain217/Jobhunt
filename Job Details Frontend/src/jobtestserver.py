@@ -35,7 +35,7 @@ def load_csv():
 
 
 
-def clean_response(resp):
+def clean_and_process_response(resp):
 
     for item in resp['results']:
         #remove html tags
@@ -48,8 +48,17 @@ def clean_response(resp):
         item['description'] = desc
         item['title'] = title
 
-        #set location from loaded list
+        try:
+            #add location data
+            apiUrl = "https://api.teleport.org/api/cities"
 
+            #city information is last element of location area attribute
+            response = requests.get(apiUrl, params= {'search': item['location']['area'][-1], 'limit': 10})
+            results = response.json()
+            item['city'] = results['_embedded']['city:search-results'][0]['matching_alternate_names'][0]['name']
+
+        except Exception as e:
+            pass
     
     return resp
 
@@ -64,7 +73,7 @@ def get_jobs(searchstring, location):
     whereParam = "" if location == "United States" else "&where={0}".format(escaped_location)
     apiUrl = "http://api.adzuna.com/v1/api/jobs/us/search/1?app_id={0}&app_key={1}&results_per_page=20&what={2}{3}&content-type=application/json"
     requestUrl = apiUrl.format(appid,appsecret,escaped_string,whereParam)
-    response = clean_response(requests.get(requestUrl).json())
+    response = clean_and_process_response(requests.get(requestUrl).json())
 
     # return response
     return Response(response=jsonpickle.encode(response), status=200, mimetype="application/json")
