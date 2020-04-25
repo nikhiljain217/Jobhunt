@@ -12,12 +12,12 @@ function JobCard({title,company,location,datePosted,url}) {
         var diffHours = Math.round(diff/(1024*60*60));
 
         if (diffHours < 24) {
-            return 'today';
+            return 'Today';
         }
         else {
             var diffDays = Math.round(diff / (1024 * 60 * 60 * 24));
             if (diffDays < 30) {
-                return diffDays == 1 ? 'yesterday' : `${diffDays} days ago`;
+                return diffDays == 1 ? 'Yesterday' : `${diffDays} days ago`;
             }
             else if (diffDays > 30) {
                 var diffMonths = Math.round(diffDays / 30);

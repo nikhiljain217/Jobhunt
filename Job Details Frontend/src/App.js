@@ -27,7 +27,7 @@ export default class App extends React.Component {
         <SearchBar />
         <Route path='/' exact component={Home} />
         <center><Route path='/jobs/:name/:location' component={JobListings} /></center>
-        <Route path="/details" component={Details} />
+        <Route path="/:jobid/details" component={Details} />
       </div>
     </Router>
   );

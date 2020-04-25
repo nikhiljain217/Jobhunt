@@ -1,6 +1,7 @@
 from flask import Flask, request, Response
 from flask_cors import CORS
 from urllib.parse import quote
+import csv
 import jsonpickle
 import io
 import requests
@@ -10,6 +11,7 @@ app = Flask(__name__)
 CORS(app)
 appid = ""
 appsecret = ""
+location_data = {}
 
 with open('appid.secret','r') as f:
     appid = f.read().rstrip()
@@ -17,10 +19,26 @@ with open('appid.secret','r') as f:
 with open('appkey.secret','r') as f:
     appsecret = f.read().rstrip()
 
+def load_csv():
+    global location_data
+
+    with open('locations.csv','r') as f:
+        reader = csv.reader(f)
+
+        # csv schema is city, studio apartment price, 1br, 2br, 3br, 4br
+        for row in reader:
+            #skip headings
+            if row[0] == 'City':
+                continue
+            location_data[row[0]] = row[1:]
+
+
+
 
 def clean_response(resp):
 
     for item in resp['results']:
+        #remove html tags
         desc = item['description']
         title = item['title']
         desc = desc.replace('<strong>','')
@@ -29,6 +47,9 @@ def clean_response(resp):
         title = title.replace('</strong>','')
         item['description'] = desc
         item['title'] = title
+
+        #set location from loaded list
+
     
     return resp
 
