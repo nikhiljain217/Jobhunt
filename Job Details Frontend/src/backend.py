@@ -3,14 +3,17 @@ from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS
 from urllib.parse import quote
 from pprint import pprint
+from datetime import time
 
 import csv
 import tweepy
 import jsonpickle
 import requests
+import time
 
 from twitter_keys import *
 from adzuna_keys import *
+from hobbies import *
 
 # init server
 twitter_api = None
@@ -156,11 +159,28 @@ def get_sentiment_analysis(company):
     return
 
 
+@app.route('/gethobbies/<location>', methods=['GET'])
 def get_hobby_tweets(location):
-    #use hard coded list of hobbies
+    global twitter_api
+    
+    #use hard coded list of hobbies to find out popular ones
+    popular = hobbies[:10]
+    try:
+        latitude,longitude = (int(x) for x in location.split(','))
+        geocode = "{0},{1},5mi".format(latitude,longitude)
+        untilDate = datetime.utcfromtimestamp(time.time()-6*24*3600).strftime('%Y-%m-%d')
+        
+        occur = {}
+        for hobby in hobbies:
+            results = twitter_api.search(q=hobby,geocode=geocode,lang='en',count=10,until=untilDate)
+            occur[hobby] = len(results)
+            popular = [k for k,_ in sorted(occur.items, key= lambda item : (item[1],item[0]), reverse=True)]
+            popular = popular[:10]
+    except Exception as e:
+        print("Exception occured : {0}".format(e))
 
-    #search tweets
-    return
+    resp = { 'popular_hobbies' : popular }
+    return Response(response = jsonpickle.encode(resp), status=200, mimetype="application/json")
 
 
 def get_twitter_connection():
