@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS
 from urllib.parse import quote
 from pprint import pprint
-from datetime import time
+from datetime import datetime
 
 import csv
 import tweepy
@@ -166,7 +166,7 @@ def get_hobby_tweets(location):
     #use hard coded list of hobbies to find out popular ones
     popular = hobbies[:10]
     try:
-        latitude,longitude = (int(x) for x in location.split(','))
+        latitude,longitude = (float(x) for x in location.split(','))
         geocode = "{0},{1},5mi".format(latitude,longitude)
         untilDate = datetime.utcfromtimestamp(time.time()-6*24*3600).strftime('%Y-%m-%d')
         
@@ -174,8 +174,9 @@ def get_hobby_tweets(location):
         for hobby in hobbies:
             results = twitter_api.search(q=hobby,geocode=geocode,lang='en',count=10,until=untilDate)
             occur[hobby] = len(results)
-            popular = [k for k,_ in sorted(occur.items, key= lambda item : (item[1],item[0]), reverse=True)]
+            popular = [k for k,_ in sorted(occur.items(), key= lambda item : (item[1],item[0]), reverse=True)]
             popular = popular[:10]
+
     except Exception as e:
         print("Exception occured : {0}".format(e))
 
