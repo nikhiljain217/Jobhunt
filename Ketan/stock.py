@@ -108,6 +108,6 @@ class Stock:
 
 		return(self.data_json)
 
-if __name__ == "__main__":
-	st = Stock("vnet")
-	st.driver()
+# if __name__ == "__main__":
+# 	st = Stock("vnet")
+# 	st.driver()
