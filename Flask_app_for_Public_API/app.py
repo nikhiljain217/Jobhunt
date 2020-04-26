@@ -144,11 +144,13 @@ def get_rents(city):
     global uaDict
     try:
         url = "{}details".format(uaDict[city.title()])
+        print(url)
         response = requests.get(url).json()
         response = response['categories'][8]['data']
         rents = []
         label = []
-        for index in range(3):
+        
+        for index in reversed(range(3)):
             label.append(response[index]['label'])
             rents.append(int(response[index]['currency_dollar_value']))
         housing={}
