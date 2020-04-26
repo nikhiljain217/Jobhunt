@@ -53,6 +53,7 @@ def get_jobs(searchstring, location):
 
 @app.route('/getlocationinfo/<raw_location>', methods=['GET'])
 def get_location_info(raw_location):
+    raw_location = raw_location[:raw_location.index(',')]
 
     city_name = ""
     urban_area = ""
@@ -71,7 +72,7 @@ def get_location_info(raw_location):
         #get corresponding urban area url, state and latitude longitude
         response = requests.get(cityResourceUrl)
         result = response.json()
-        urban_area = result["_links"]["city:urban_area"]
+        urban_area = result["_links"]["city:urban_area"]["name"]
         state_name = result["_links"]["city:admin1_division"]["name"]
         latlong = result["location"]["latlon"]
 
