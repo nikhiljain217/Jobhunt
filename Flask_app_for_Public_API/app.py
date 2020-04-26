@@ -6,6 +6,7 @@ from pprint import pprint
 from flask_cors import CORS
 from news_key import *
 import traceback
+from elasticsearch import Elasticsearch
 
 uaDict ={}
 app=Flask(__name__)
@@ -136,6 +137,33 @@ def covid_case(city, state):
         result = {"county":"",   "state":"",   "dates":[], "cases":[], "deaths":[], "total_cases":0, "total_deaths":0}
 
     return Response(response=jsonpickle.encode(result), status=200, mimetype="application/json")
+
+
+@app.route('/place/housing/<city>')
+def get_rents(city):
+    global uaDict
+    try:
+        url = "{}details".format(uaDict[city.title()])
+        response = requests.get(url).json()
+        response = response['categories'][8]['data']
+        rents = []
+        label = []
+        for index in range(3):
+            label.append(response[index]['label'])
+            rents.append(int(response[index]['currency_dollar_value']))
+        housing={}
+        housing['rents']=rents
+        housing['label']=label
+        
+
+
+    except Exception as e:
+
+        print("The Rent Api have exception ")
+        traceback.print_exc()
+        housing = {'rents':[],'label':[]}
+
+    return Response(response=jsonpickle.encode(housing), status=200, mimetype="application/json")
 
     
 if __name__ == '__main__':
