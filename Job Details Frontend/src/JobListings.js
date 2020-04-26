@@ -30,10 +30,9 @@ function JobListings({match}) {
                             key={item.id}
                             title={item.title}
                             company={item.company.display_name}
-                            location={item.location.display_name}
+                            location={item.location}
                             datePosted={item.created}
                             url={item.redirect_url}
-                            city={item.city}
                             description={item.description}
                         />
                     </Link>

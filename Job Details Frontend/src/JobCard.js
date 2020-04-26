@@ -1,7 +1,7 @@
 import React from 'react';
 import './JobCard.css'
 
-function JobCard({title,company,location,datePosted,url,city,description}) {
+function JobCard({title,company,location,datePosted,url,description}) {
 
     const getDateString = () => {
         // convert date to diff
@@ -38,7 +38,7 @@ function JobCard({title,company,location,datePosted,url,city,description}) {
             <img src={`http://logo.clearbit.com/${company.replace(/\s/g,'')}.com?size=40`} alt=""></img>
             <h4>{title}</h4>
             <p className="company">{company}</p>
-            <p className="location">{location}</p>
+            <p className="location">{location.display_name}</p>
             <p>{dateString}</p>
         </div>
     );
