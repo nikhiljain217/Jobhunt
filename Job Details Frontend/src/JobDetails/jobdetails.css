@@ -1,8 +1,9 @@
 .job-container{
     background:#f9f9f9;
     display:flex;
-    margin:10px 10px;
+    /* margin:10px 10px; */
     flex-direction:column;
+    padding: 5px 5px;
 }
  
 .top-row{
@@ -22,6 +23,7 @@ h1
 .job-heading
 {
     flex:4;
+    padding-left: 20px;
 }
 
 .save-button{

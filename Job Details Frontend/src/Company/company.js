@@ -1,36 +1,42 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import './company.css'
 import { Rating } from 'semantic-ui-react'
+import connect from "react-redux/es/connect/connect";
+import CompanyNews from './companynews';
+import WikiInfo from '../Place/wikiinfo'
 
 
 
-function Company()
+
+class Company extends Component 
 {
-    const ratingStyle = {
-        color:'blue'
-    };
+    constructor(props) {
+        super(props);
+    }
+    
+
+    render()
+    {
+
+        let companyName = this.props.company;
+        console.log(companyName)
     return(
     <div className="company-container">
         <div className="top-row">
         <div className="company-heading">
-            <h1>Amazon</h1>
+    <h1>{companyName}</h1>
         </div>
-        <div className="ratings">
-            
-            <center>Rating</center>
-
-            <center><div className='bla'><Rating defaultRating={3} maxRating={5} size="massive" disabled /></div></center>
-            </div>
             </div>
             <div className="company-elements">
                 <div className="company-details">
-                Amazon.com, Inc.[7] is an American multinational technology company based in Seattle, with 750,000 employees.[8] It focuses on e-commerce, cloud computing, digital streaming, and artificial intelligence. It is considered one of the Big Four tech companies, along with Google, Apple, and Microsoft.[9][10][11] It has been referred to as "one of the most influential economic and cultural forces in the world."[12]
+                <WikiInfo topic={companyName} length={625} />
                 </div>
                 <div className="stock-graph-body">
 
                 </div>
                 <div className="company-news-body">
-
+                    <div className="local-company-news">
+                <CompanyNews name={companyName} /></div>
 
                 </div>
                 <div className="company-tweet-body">
@@ -41,9 +47,18 @@ function Company()
         
 
         </div>
+    
         
-        
-)
+)}
+
+
 }
 
-export default Company;
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        company: state.company
+    }
+}
+
+export default connect(mapStateToProps)(Company);

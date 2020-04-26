@@ -1,12 +1,13 @@
 .company-container{
     background:#f9f9f9;
     display:flex;
-    margin:10px 10px;
+    
+    padding: 5px 5px;
     flex-direction:column;
 }
  
 .top-row{
-    flex:1;
+    flex:2;
     display:flex;
     
 
@@ -16,11 +17,16 @@
 h1
 {
     color:#313335;
+    
 }
 
 .company-heading
 {
-    flex:3;
+    
+    flex:2;
+    padding-left: 20px;
+    padding-bottom: 30px;
+    margin-top: 2vh;
 }
 
 .ratings{
@@ -39,14 +45,14 @@ h1
 .company-elements
 {
     display:grid;
-    grid-template-columns: 50% 22% 22%;
+    grid-template-columns: 44% 25% 25%;
     grid-template-rows: 40% 50% auto;
     column-gap:20px;
     row-gap:20px;
     width: 92vw;
     height: 70vh;
-    flex:4;
-    align-self: flex-start;
+    flex:5;
+    align-self: flex-end;
 }    
 
 h1{
@@ -85,10 +91,21 @@ h1{
     grid-row:1/3;
     background: #ffffff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    padding:5px 5px;
+    
     overflow:auto;
     border-radius: 10px;
 }
+
+.local-company-news
+{   
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.local-company-news::-webkit-scrollbar {
+    
+    display: none;
+  }
 
 .company-tweet-body
 {

@@ -1,0 +1,33 @@
+
+
+.news-body{
+    display:flex;
+    
+    flex-direction: column;
+    border-radius: 5px;
+    padding:5px;
+    border: solid #ccc 1px;
+    margin-top: 3px;
+
+}
+
+.news-heading
+{
+    margin-bottom: 5px;
+}
+
+
+.news-body:hover{
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+cursor:pointer;
+}
+
+.news-img
+{
+    float:left;
+}
+
+.news-author
+{
+    font-size: small;
+}

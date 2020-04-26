@@ -1,10 +1,11 @@
 
 import React,{useState, useEffect} from 'react';
 import Select from 'react-select'
-import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-function LivingStandard()
+function LivingStandard({place})
 {
     
     const percentage = 66;
@@ -32,16 +33,17 @@ function LivingStandard()
     const [selectedParameter,setSelectedParameter] = useState({value:0,label:''});
     useEffect(()=>{
         getCityStandard();
-        getReferenceStandard();},[referenceCity,referenceCityRating]);
+        getReferenceStandard();},[referenceCity, ]);
 
     const getCityStandard = async () => {
       
-      const response = await fetch('http://127.0.0.1:8000/living/Seattle');
+      const response = await fetch(`http://127.0.0.1:8000/place/scores/${place}`);
       const data = await response.json();
       
       cityStandard.map(option =>{
           option.value = data[option.label]
       });
+      console.log(referenceCityStandard);
       
 
     }
@@ -49,12 +51,14 @@ function LivingStandard()
     const getReferenceStandard = async () => {
       
 
-        const response = await fetch(`http://127.0.0.1:8000/living/${referenceCity}`);
+        const response = await fetch(`http://127.0.0.1:8000/place/scores/${referenceCity}`);
         const data = await response.json();
         
         referenceCityStandard.map(option =>{
             option.value = data[option.label]
         });
+
+        console.log(cityRating)
   
       }
 
@@ -80,8 +84,7 @@ function LivingStandard()
     {
         
         setSelectedParameter({value:selectedOption.value,label:selectedOption.label});
-        console.log(selectedParameter); 
-        console.log(selectedOption); 
+        console.log(selectedOption.value*10)
         setCityRating(selectedOption.value*10);
         referenceCityStandard.map(
             option => {
@@ -112,13 +115,13 @@ function LivingStandard()
         <div className="living-ind">
         <CircularProgressbarWithChildren styles={buildStyles(circleStyle)} value={cityRating} >
         <div style={{ fontSize: 12, marginTop: -5 }}>
-    <strong>Seattle</strong> <br />{`${cityRating / 10}/10`}</div>
+    <strong>{place}</strong> <br />{`${(cityRating/10).toFixed(2)}/10`}</div>
         </CircularProgressbarWithChildren>
         </div>
         <div className="living-ind">
         <CircularProgressbarWithChildren styles={buildStyles(circleStyle)} value= {referenceCityRating}     >
         <div style={{ fontSize: 12, marginTop: -5 }}>
-    <strong>{referenceCity}</strong><br /> {`${referenceCityRating / 10}/10`}</div>
+    <strong>{referenceCity}</strong><br /> {`${(referenceCityRating/10).toFixed(2)}/10`}</div>
         </CircularProgressbarWithChildren>
         </div>
         <div className="living-select">

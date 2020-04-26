@@ -6,6 +6,7 @@ import JobDetail from './JobDetails/jobdetails.js';
 import SearchBar from './SearchBar';
 import SideTab from './side-tab.js'
 import JobListings from './JobListings';
+
 import './App.css';
 
 
