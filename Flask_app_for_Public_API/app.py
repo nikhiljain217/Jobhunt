@@ -73,15 +73,23 @@ def place_score_api(name):
 @app.route('/description/<name>')
 def description_api(name):
     try:
-        if(name=='New York'):
+        if(name.find('New York')!=-1):
             name = "New York City"
+
+        wikiLink='https://en.wikipedia.org/wiki/'+name.replace(" ","_")
+        if(name.find('_')==-1):
+            url ="https://en.wikipedia.org/w/api.php?action=opensearch&search={}&limit=1&namespace=0&format=json".format(name)
+            response=requests.get(url).json()
+            wikiLink = response[3][0]
+            name = response[1][0]
+
         url = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=1&explaintext=1&titles={}".format(name)
         response=requests.get(url).json()
         #pprint(response)
         Page_id = list(response['query']['pages'].keys())[0]
         result = {}
         result['description'] = response['query']['pages'][Page_id]['extract']
-        result['url'] = 'https://en.wikipedia.org/wiki/'+name.replace(" ","_")
+        result['url'] = wikiLink
     except Exception as e:
         result = {"description":"","url":""}
         print("The wikipedia Api have exception ")
@@ -146,10 +154,18 @@ def get_rents(city):
         url = "{}details".format(uaDict[city.title()])
         print(url)
         response = requests.get(url).json()
-        response = response['categories'][8]['data']
+        response = response['categories']
+        temp={}
+        for item in response:
+            if item['id']!='HOUSING':
+                continue
+            else:
+                temp =item['data']
+                break
+        response = temp
         rents = []
         label = []
-        
+        print(response)
         for index in reversed(range(3)):
             label.append(response[index]['label'])
             rents.append(int(response[index]['currency_dollar_value']))
