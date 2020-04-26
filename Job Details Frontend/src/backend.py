@@ -16,7 +16,7 @@ from adzuna_keys import *
 twitter_api = None
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 
 def clean_and_process_response(resp):
@@ -81,25 +81,21 @@ def get_location_info(raw_location):
     resp = {'city_name': city_name, 'urban_area': urban_area, 'state_name': state_name, 'latlong': latlong}
     return Response(response = jsonpickle.encode(resp), status=200, mimetype="application/json")
 
+
 class TweetStreamListener(tweepy.StreamListener):
 
-    def __init__(self, namespace):
+    def __init__(self):
         self.backoff_timeout = 1
-        self.namespace = namespace
+        super(TweetStreamListener,self).__init__()
 
     def on_status(self, status):
+        global socketio
+
         #reset timeout
         self.backoff_timeout = 1
 
         #send message on namespace
-
-    def push_tweet(self, tweet):
-        try:
-            self.producer.send(self.topic, value=tweet.text.encode('utf-8'))
-            self.producer.flush()
-        except Exception as e:
-            print("Exception occurred: {0}".format(e))
-
+        socketio.emit('tweet', jsonpickle.encode(status), namespace='/company_tweets')
 
     def on_error(self, status_code):
 
@@ -112,18 +108,43 @@ class TweetStreamListener(tweepy.StreamListener):
             print("Error {0} occurred".format(status_code))
             return False
 
+tweet_stream = None
 
-def get_company_tweets(company):
-    #init connection
+@socketio.on('connect', namespace='/company_tweets')
+def company_tweet_connect():
+    global tweet_stream
+    global twitter_api
 
-    #start listener to listen for company tweets
-    listener = TweetStreamListener("company_tweets",producer)
+    #create listener to listen for company tweets
+    listener = TweetStreamListener()
+    tweet_stream = tweepy.Stream(auth = twitter_api.auth, listener=listener)
 
-    #get tweets from tweepy
 
-    #websocket thingy to return results continuously
-    return
+@socketio.on('disconnect', namespace='/company_tweets')
+def company_tweet_disconnect():
+    global tweet_stream
 
+    print("Client disconnected")
+
+    #stop stream
+    tweet_stream.disconnect()
+    tweet_stream = None
+
+
+@socketio.on('start', namespace='/company_tweets')
+def start_tweet_streaming(company):
+    #start stream to listen to company tweets
+    global tweet_stream
+
+    tweet_stream.filter(track=[company])
+
+"""
+@socketio.on_error_default
+def default_error_handler(e):
+    print("error occurred")
+    print(request.event["message"])
+    print(request.event["args"])
+"""
 
 def get_sentiment_analysis(company):
     #search for tweets for this company in the last 7 days
@@ -139,11 +160,6 @@ def get_hobby_tweets(location):
 
     #search tweets
     return
-
-
-@socketio.on('connect')
-def on_connect():
-    print("connected!")
 
 
 def get_twitter_connection():
