@@ -30,9 +30,7 @@ function JobListings({match}) {
         dispatch(setCompany(objectDic.Company));
         dispatch(setTitle(objectDic.JobTitle));
         dispatch(setUrl(objectDic.URL));
-        dispatch(setPlace(objectDic.Place))
-        console.log(objectDic.Description)
-        dispatch(setDescription(objectDic.Description))
+        dispatch(setPlace(objectDic.Place));
 
 
         
@@ -49,7 +47,7 @@ function JobListings({match}) {
                     'JobTitle':item.title,
                     'Company':item.company.display_name,
                     'URL':item.redirect_url,
-                    "Place":item.city,
+                    "Place":item.location.display_name,
                     "Description":item.description
                     }
 
