@@ -13,21 +13,46 @@ class Place extends Component
 {
     constructor(props) {
             super(props);
+
+            this.state = {
+                city:"",
+                urbanArea:"",
+                latLon:{},
+                stateName:""
         }
-    
+        
+        
+
+        }
+
+        async componentDidMount()
+        {
+            let jobPlace = this.props.place
+            fetch(`http://127.0.0.1:5000/getlocationinfo/${jobPlace}`)
+            .then(response => response.json())
+            .then(data => this.setState({city:data['city_name'],
+            urbanArea:data['urban_area'],
+            latLon:data['latlong'],
+            stateName:data['state_name']
+        }));
+            
+           console.log(this.state.urbanArea);
+            
+        }
         render()
         {
-        let jobPlace = this.props.place
+        
         
         return(
             <div className="place-container">
 
-                <PlaceImage place={jobPlace}/>
-                <h1>{jobPlace}</h1>
+                <PlaceImage place={this.state.city}/>
+                {console.log(this.state.city)}
+                <h1>{this.state.city}</h1>
                     
                     <div className = "place-elements">
                     <div className="detail">
-                            <WikiInfo topic={jobPlace} length={554}/>
+                            <WikiInfo topic={this.state.city} length={554}/>
                         </div>
                         <div className="expenses">
                             {/* {<RentalRecords place={jobPlace} /}> */}
@@ -35,7 +60,7 @@ class Place extends Component
                         
                     
                         <div className="living">
-                        <LivingStandard place={jobPlace}/>
+                        <LivingStandard place={this.state.city}/>
                         </div>
                         <div className="corona">
                         

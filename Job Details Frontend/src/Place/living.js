@@ -33,7 +33,7 @@ function LivingStandard({place})
     const [selectedParameter,setSelectedParameter] = useState({value:0,label:''});
     useEffect(()=>{
         getCityStandard();
-        getReferenceStandard();},[referenceCity, ]);
+        getReferenceStandard();});
 
     const getCityStandard = async () => {
       

@@ -4,16 +4,16 @@ import './Place.css'
  {
 
     const [imgUrl,setImgUrl] = useState("");
-    
+    console.log(place)
 
-    useEffect(()=>{
-        getImage();
-        },[imgUrl],[]);
+    useEffect(()=>{getImage();
+        });
 
     const getImage = async () => {
     
         const response = await fetch(`http://127.0.0.1:8000/place/image/${place}`);
         const data = await response.json();
+        console.log(data['url'])
         setImgUrl(data['url']);
       
       

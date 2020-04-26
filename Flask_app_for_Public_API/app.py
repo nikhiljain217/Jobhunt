@@ -1,46 +1,91 @@
-from flask import Flask
+from flask import Flask, Response
 import requests
 import json
+import jsonpickle
+from pprint import pprint
+from flask_cors import CORS
+from news_key import *
+import traceback
 
+uaDict ={}
 app=Flask(__name__)
+CORS(app)
+
+
+
+@app.route('/company/<name>')
+def company_news(name):
+    try:
+
+        url = "http://newsapi.org/v2/everything?q={0}&page=1&pageSize=20{1}&sortBy=popularity".format(name,api_key)
+        print(url)
+        response = requests.get(url).json()
+        #pprint(response)
+        articles = response['articles']
+    except Exception as e:
+        articles = []
+        print("The News Api have exception ")
+        traceback.print_exc()
+    return Response(response=jsonpickle.encode(articles), status=200, mimetype="application/json")
+
 
 @app.route('/place/image/<name>')
 def image_api(name):
-    link=str('https://api.teleport.org/api/urban_areas/slug:')+name+str('/images/')
-    result=requests.get(link)
-    python_obj = json.loads(result.text)
-    temp=result.json()['photos']
-    temp1=temp[0]['image']
-    image_link=str(temp1['web'])
-    return image_link
+    try:
+        global uaDict
+        url = "{}images/".format(str(uaDict[name.title()]))
+        print(url)
+        response = requests.get(url).json()
+        #pprint(response)
+        image = {}
+        image['url'] = str(response['photos'][0]['image']['web'])
+    except Exception as e:
+        image = {"url":""}
+        print("The Place Image Api have exception ")
+        traceback.print_exc()
+    return Response(response=jsonpickle.encode(image), status=200, mimetype="application/json")
 
 @app.route('/place/scores/<name>')
 def place_score_api(name):
-    link=str('https://api.teleport.org/api/urban_areas/slug:')+name+str('/scores/')
-    result=requests.get(link)
-    python_obj = json.loads(result.text)
-    temp=result.json()['categories']
-    result={}
-    result['Cost_of_Living']=round(temp[1]['score_out_of_10'],2)
-    result['Commute']=round(temp[5]['score_out_of_10'],2)
-    result['Safety']=round(temp[7]['score_out_of_10'],2)
-    result['Environmental_Quality']=round(temp[10]['score_out_of_10'],2)
-    result['Taxation']=round(temp[12]['score_out_of_10'],2)
-    return flask.jsonify(result)
+    try:
+        url = "{}scores/".format(str(uaDict[name.title()]))
+        result=requests.get(url)
+        response = result.json()
+        #pprint(response)
+        score={}
+        score['Cost of Living'] = 10.0 - round(response['categories'][1]['score_out_of_10'],2)
+        score['Commute'] = round(response['categories'][5]['score_out_of_10'],2)
+        score['Safety'] = round(response['categories'][7]['score_out_of_10'],2)
+        score['Environmental Quality'] = round(response['categories'][10]['score_out_of_10'],2)
+        score['Taxation'] =10.0- round(response['categories'][12]['score_out_of_10'],2)
+        print(score)
+    except Exception as e:
+        score = {'Cost of Living':0,
+        'Commute':0,
+        'Safety':0,
+        'Environmental Quality':0,
+        'Taxation':0}
+        print("The Place Score Api have exception")
+        traceback.print_exc()
+    return Response(response=jsonpickle.encode(score), status=200, mimetype="application/json")
 
 @app.route('/description/<name>')
 def description_api(name):
-    link=str('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=1&explaintext=1&titles=')+name
-    result=requests.get(link)
-    python_obj = json.loads(result.text)
-    temp=result.json()['query']['pages']
-    for key,value in temp.items():
-        temp=value
-    temp=temp['extract']
-    result={}
-    result['description']=temp
-    result['url']='https://en.wikipedia.org/wiki/'+name
-    return flask.jsonify(result)
+    try:
+        if(name=='New York'):
+            name = "New York City"
+        url = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=1&explaintext=1&titles={}".format(name)
+        response=requests.get(url).json()
+        #pprint(response)
+        Page_id = list(response['query']['pages'].keys())[0]
+        result = {}
+        result['description'] = response['query']['pages'][Page_id]['extract']
+        result['url'] = 'https://en.wikipedia.org/wiki/'+name.replace(" ","_")
+    except Exception as e:
+        result = {"description":"","url":""}
+        print("The wikipedia Api have exception ")
+        traceback.print_exc()
+    return Response(response=jsonpickle.encode(result), status=200, mimetype="application/json")
 
 @app.route('/job/<keyword>/<place>/<max_results>')
 def job_api(keyword,place,max_results):
@@ -60,3 +105,40 @@ def job_api(keyword,place,max_results):
         temp5 =python_obj['results'][i]['company']['display_name']  # Company name
         result[i]={'title':temp,'date':temp1,'place':temp2,'url':temp3,'description':temp4,'company':temp5}
     return flask.jsonify(result)
+
+def getUAValues():
+    global uaDict
+    url = "https://api.teleport.org/api/urban_areas/"
+    response = requests.get(url).json()
+
+    response = response['_links']['ua:item']
+
+    for item in response:
+        uaDict[item['name']]=item['href']
+    
+
+@app.route('/covid/<city>/<state>')
+def covid_case(city, state):
+
+    try:
+        print("Got requests")
+        e = Elasticsearch()
+        res = e.search(index="cities_to_county",body={"query":{"bool":{"must":[{"match":{"city":city}},{"match":{"state":state}}]}}})
+        county = res['hits']['hits'][0]['_source']['county']
+
+        res = e.search(index="covid_19",body={"query":{"bool":{"must":[{"match":{"county":county}},{"match":{"state":state}}]}}})
+        print(res)
+        result = res['hits']['hits'][0]['_source']
+    except Exception as e:
+
+        print("The Covid Api have exception ")
+        traceback.print_exc()
+        result = {"county":"",   "state":"",   "dates":[], "cases":[], "deaths":[], "total_cases":0, "total_deaths":0}
+
+    return Response(response=jsonpickle.encode(result), status=200, mimetype="application/json")
+
+    
+if __name__ == '__main__':
+    app.debug = True
+    getUAValues()
+    app.run(port=8000)
