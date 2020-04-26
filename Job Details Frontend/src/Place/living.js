@@ -5,7 +5,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-function LivingStandard({place})
+function LivingStandard({place,city})
 {
     
     const percentage = 66;
@@ -115,7 +115,7 @@ function LivingStandard({place})
         <div className="living-ind">
         <CircularProgressbarWithChildren styles={buildStyles(circleStyle)} value={cityRating} >
         <div style={{ fontSize: 12, marginTop: -5 }}>
-    <strong>{place}</strong> <br />{`${(cityRating/10).toFixed(2)}/10`}</div>
+    <strong>{city}</strong> <br />{`${(cityRating/10).toFixed(2)}/10`}</div>
         </CircularProgressbarWithChildren>
         </div>
         <div className="living-ind">
