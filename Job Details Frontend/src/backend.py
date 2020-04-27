@@ -99,7 +99,22 @@ class TweetStreamListener(tweepy.StreamListener):
         self.backoff_timeout = 1
 
         #send message on namespace
-        socketio.emit('tweet', jsonpickle.encode(status), namespace='/company_tweets')
+        tweet_text = ""
+        if hasattr(status, 'retweeted_status') and hasattr(status.retweeted_status, 'extended_tweet'):
+            tweet_text = status.retweeted_status.extended_tweet['full_text']
+        else:
+            tweet_text = status.full_text
+
+        response = {
+            'user': {
+                'name': status.user.name,
+                'avatar_url': status.user.profile_image_url,
+                'screen_name': status.user.screen_name
+            },
+            'created': str(status.created_at),
+            'text': tweet_text
+        }
+        socketio.emit('tweet', jsonpickle.encode(response), namespace='/company_tweets')
 
     def on_error(self, status_code):
 
@@ -121,7 +136,7 @@ def company_tweet_connect():
 
     #create listener to listen for company tweets
     listener = TweetStreamListener()
-    tweet_stream = tweepy.Stream(auth = twitter_api.auth, listener=listener)
+    tweet_stream = tweepy.Stream(auth = twitter_api.auth, listener=listener, tweet_mode='extended')
 
 
 @socketio.on('disconnect', namespace='/company_tweets')
@@ -190,7 +205,7 @@ def get_twitter_connection():
     try:
         auth = tweepy.OAuthHandler(tw_consumer_key, tw_consumer_secret)
         auth.set_access_token(tw_access_token, tw_access_token_secret)
-        api = tweepy.API(auth)
+        api = tweepy.API(auth, wait_on_rate_limit=True)
     except Exception as e:
         print("Exception occurred : {0}".format(e))
     
