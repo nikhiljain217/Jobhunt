@@ -4,6 +4,9 @@ import { Rating } from 'semantic-ui-react'
 import connect from "react-redux/es/connect/connect";
 import CompanyNews from './companynews';
 import WikiInfo from '../Place/wikiinfo'
+import TweetList from './tweetlist';
+import SentimentalAnalysis from './analysis';
+
 
 
 
@@ -29,18 +32,18 @@ class Company extends Component
             </div>
             <div className="company-elements">
                 <div className="company-details">
-                <WikiInfo topic={companyName} length={625} />
+                <WikiInfo topic={companyName} length={570} />
                 </div>
                 <div className="stock-graph-body">
-
+                <SentimentalAnalysis company={companyName} />
                 </div>
                 <div className="company-news-body">
                     <div className="local-company-news">
                 <CompanyNews name={companyName} /></div>
-
+                
                 </div>
                 <div className="company-tweet-body">
-                
+                <TweetList company={companyName}/>
                 </div>
 
             </div>

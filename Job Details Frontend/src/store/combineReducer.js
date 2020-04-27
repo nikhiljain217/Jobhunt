@@ -5,6 +5,7 @@ import {combineReducers} from 'redux';
 import TitleReducer from './titleReducer';
 import TweetReducer from './tweetReducer'
 import DescriptionReducer from './descriptionReducer';
+import AnalysisReducer from './analysisReducer'
 
 const rootReducer = combineReducers({
     company:CompanyReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     url:URLReducer,
     description:DescriptionReducer,
     Place:PlaceReducer,
-    TweetReducer
+    TweetReducer,
+    AnalysisReducer
 
 });
 

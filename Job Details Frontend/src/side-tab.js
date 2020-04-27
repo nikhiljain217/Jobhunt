@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { MdLocationOn, MdHome} from 'react-icons/md';
 import {FaBriefcase} from 'react-icons/fa'
 import {IoIosBriefcase} from 'react-icons/io'
+import {BsGraphUp} from 'react-icons/bs'
 import './App.css';
 import {NavLink, useRouteMatch} from 'react-router-dom'
 
@@ -26,7 +27,7 @@ const SideTab = () =>
                 </NavLink>
 
                 <NavLink style={linkStyle} to={`${match.path}/company`} activeStyle={aStyle}>
-                    <div className="icon-line"><IoIosBriefcase size="40px" /></div>
+                    <div className="icon-line"><BsGraphUp size="40px" /></div>
                 </NavLink>
 
                 <NavLink style={linkStyle} to={`${match.path}/place`} activeStyle={aStyle}>

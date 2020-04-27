@@ -110,14 +110,14 @@ def construct_tweet(status):
         'favorite_count': status.favorite_count,
         'retweet_count': status.retweet_count,
         'entities': {
-            
             'urls': status.entities['urls'] if 'urls' in status.entities else [],
             'user_mentions': status.entities['user_mentions'] if 'user_mentions' in status.entities else [],
             'hashtags': status.entities['hashtags'] if 'hashtags' in status.entities else [],
             'symbols': status.entities['symbols'] if 'symbols' in status.entities else []
         }
-    }
 
+        
+    }
     if 'media' in status.entities:
             tweet_data['entities']['media']=status.entities['media']
 
@@ -255,7 +255,9 @@ def sentiment_start_streaming(company):
                 do_sentiment_analysis(analyzer, chunk)
 
                 #construct and emit response
-                resp = { 'total_negative': total_negative, 'total_neutral': total_neutral, 'total_positive': total_positive, 'total_processed': total_processed }
+                resp = {'data':[{'id':'Negative','label':'Negative','value':total_negative},{'id':'Positive','label':'Positive','value':total_positive},{'id':'Neutral','label':'Neutral','value':total_neutral}],
+                        'total_processed': total_processed }
+                
                 print("sent response {0}".format(resp))
                 socketio.emit('sentiment', jsonpickle.encode(resp), namespace='/sentiments')
 

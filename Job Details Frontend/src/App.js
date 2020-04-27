@@ -17,7 +17,7 @@ export default class App extends React.Component {
     const Home = () =>
     {
       return(
-        <div><h1>Home Page</h1></div>
+        <div></div>
 
 
       );
