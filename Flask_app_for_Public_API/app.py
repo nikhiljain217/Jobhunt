@@ -22,6 +22,7 @@ def company_news(name):
         print(url)
         response = requests.get(url).json()
         #pprint(response)
+
         articles = response['articles']
     except Exception as e:
         articles = []
@@ -73,15 +74,23 @@ def place_score_api(name):
 @app.route('/description/<name>')
 def description_api(name):
     try:
-        if(name=='New York'):
+        if(name.find('New York')!=-1):
             name = "New York City"
+
+        wikiLink='https://en.wikipedia.org/wiki/'+name.replace(" ","_")
+        if(name.find('_')==-1):
+            url ="https://en.wikipedia.org/w/api.php?action=opensearch&search={}&limit=1&namespace=0&format=json".format(name)
+            response=requests.get(url).json()
+            wikiLink = response[3][0]
+            name = response[1][0]
+
         url = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=1&explaintext=1&titles={}".format(name)
         response=requests.get(url).json()
         #pprint(response)
         Page_id = list(response['query']['pages'].keys())[0]
         result = {}
         result['description'] = response['query']['pages'][Page_id]['extract']
-        result['url'] = 'https://en.wikipedia.org/wiki/'+name.replace(" ","_")
+        result['url'] = wikiLink
     except Exception as e:
         result = {"description":"","url":""}
         print("The wikipedia Api have exception ")
@@ -128,13 +137,31 @@ def covid_case(city, state):
         county = res['hits']['hits'][0]['_source']['county']
 
         res = e.search(index="covid_19",body={"query":{"bool":{"must":[{"match":{"county":county}},{"match":{"state":state}}]}}})
-        print(res)
+        
+
+        
         result = res['hits']['hits'][0]['_source']
+        data=[]
+        tickinterval=round(len(result["dates"])/4)
+        tickValues=[]
+        for index in range(len(result["dates"])):
+            single_dict={}
+            single_dict['x']=result["dates"][index]
+            single_dict['y']=result["cases"][index]
+            if(index%tickinterval==0):
+                tickValues.append(result["dates"][index])
+
+            data.append(single_dict)
+        result["data"]=data
+        result["tickValues"]=tickValues
+        del result["dates"]
+        del result["cases"]
+        
     except Exception as e:
 
         print("The Covid Api have exception ")
         traceback.print_exc()
-        result = {"county":"",   "state":"",   "dates":[], "cases":[], "deaths":[], "total_cases":0, "total_deaths":0}
+        result = {"county":"",   "state":"", "tickValues":[],"deaths":[], "total_cases":0, "total_deaths":0, "data":0}
 
     return Response(response=jsonpickle.encode(result), status=200, mimetype="application/json")
 
@@ -144,11 +171,21 @@ def get_rents(city):
     global uaDict
     try:
         url = "{}details".format(uaDict[city.title()])
+        
         response = requests.get(url).json()
-        response = response['categories'][8]['data']
+        response = response['categories']
+        temp={}
+        for item in response:
+            if item['id']!='HOUSING':
+                continue
+            else:
+                temp =item['data']
+                break
+        response = temp
         rents = []
         label = []
-        for index in range(3):
+        
+        for index in reversed(range(3)):
             label.append(response[index]['label'])
             rents.append(int(response[index]['currency_dollar_value']))
         housing={}

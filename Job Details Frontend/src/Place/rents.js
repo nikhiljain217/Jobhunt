@@ -1,19 +1,37 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import './rental-record.css'
 import {Bar} from 'react-chartjs-2';
 
-function RentalRecords()
+function RentalRecords({place})
 {
-    const state = {
-        labels: ['Studio', '1-BR', '2-BR',
-                 '3-BR', '4-BR'],
+    
+  const[rents,setRents] = useState([]);
+  
+
+  useEffect(()=>{getRents();
+  },[]);
+
+  
+
+  const getRents = async () =>
+  {
+    const response = await fetch(`http://127.0.0.1:8000/place/housing/${place}`);
+    const data = await response.json();
+    console.log(data['rents']);
+    setRents(data['rents']);
+
+  }
+  
+  
+  const state = {
+        labels: ["Small apartment", "Medium apartment", "Large apartment"],
         datasets: [
           {
             label: 'Rents',
             backgroundColor: '#0077B5',
             borderColor: '',
             borderWidth: 1,
-            data: [666, 667, 668, 669, 680]
+            data: rents
           }
         ]
       }
@@ -45,7 +63,7 @@ function RentalRecords()
                     },
                     title:'Rents',
                     ticks: {
-                        min: 656,
+                        min: 0,
                         callback: (value, index, values) => {
                             return '$'+value;
                         }
