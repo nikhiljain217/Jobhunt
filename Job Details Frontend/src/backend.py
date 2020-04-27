@@ -88,6 +88,39 @@ def get_location_info(raw_location):
     return Response(response = jsonpickle.encode(resp), status=200, mimetype="application/json")
 
 
+def construct_tweet(status):
+
+    tweet_text = ""
+    if hasattr(status, 'retweeted_status') and hasattr(status.retweeted_status, 'extended_tweet'):
+        tweet_text = status.retweeted_status.extended_tweet['full_text']
+    elif hasattr(status, 'full_text'):
+        tweet_text = status.full_text
+    else:
+        tweet_text = status.text
+
+    tweet_data = {
+        id_str: status.id_str,
+        user: {
+            name: status.user.name,
+            screen_name: status.user.screen_name,
+            profile_image_url: status.user.profile_image_url
+        },
+        text: tweet_text,
+        created_at: str(status.created_at),
+        favorite_count: status.favorite_count,
+        retweet_count: status.retweet_count,
+        entities: {
+            media: status.entities['media'] if 'media' in status.entities else [],
+            urls: status.entities['urls'] if 'urls' in status.entities else [],
+            user_mentions: status.entities['user_mentions'] if 'user_mentions' in status.entities else [],
+            hashtags: status.entities['hashtags'] if 'hashtags' in status.entities else [],
+            symbols: status.entities['symbols'] if 'symbols' in status.entities else []
+        }
+    }
+
+    return tweet_data
+
+
 class TweetStreamListener(tweepy.StreamListener):
 
     def __init__(self):
@@ -101,22 +134,8 @@ class TweetStreamListener(tweepy.StreamListener):
         self.backoff_timeout = 1
 
         #send message on namespace
-        tweet_text = ""
-        if hasattr(status, 'retweeted_status') and hasattr(status.retweeted_status, 'extended_tweet'):
-            tweet_text = status.retweeted_status.extended_tweet['full_text']
-        else:
-            tweet_text = status.full_text
-
-        response = {
-            'user': {
-                'name': status.user.name,
-                'avatar_url': status.user.profile_image_url,
-                'screen_name': status.user.screen_name
-            },
-            'created': str(status.created_at),
-            'text': tweet_text
-        }
-        socketio.emit('tweet', jsonpickle.encode(response), namespace='/company_tweets')
+        tweet = construct_tweet(status)
+        socketio.emit('tweet', jsonpickle.encode([tweet]), namespace='/company_tweets')
 
     def on_error(self, status_code):
 
@@ -246,7 +265,7 @@ def sentiment_start_streaming(company):
 @socketio.on('connect', namespace='/sentiments')
 def sentiment_disconnect():
     global quit_flag
-        
+
     #allow streaming to begin
     quit_flag = False
 
