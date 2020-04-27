@@ -99,22 +99,22 @@ def construct_tweet(status):
         tweet_text = status.text
 
     tweet_data = {
-        id_str: status.id_str,
-        user: {
-            name: status.user.name,
-            screen_name: status.user.screen_name,
-            profile_image_url: status.user.profile_image_url
+        'id_str': status.id_str,
+        'user': {
+            'name': status.user.name,
+            'screen_name': status.user.screen_name,
+            'profile_image_url': status.user.profile_image_url
         },
-        text: tweet_text,
-        created_at: str(status.created_at),
-        favorite_count: status.favorite_count,
-        retweet_count: status.retweet_count,
-        entities: {
-            media: status.entities['media'] if 'media' in status.entities else [],
-            urls: status.entities['urls'] if 'urls' in status.entities else [],
-            user_mentions: status.entities['user_mentions'] if 'user_mentions' in status.entities else [],
-            hashtags: status.entities['hashtags'] if 'hashtags' in status.entities else [],
-            symbols: status.entities['symbols'] if 'symbols' in status.entities else []
+        'text': tweet_text,
+        'created_at': str(status.created_at),
+        'favorite_count': status.favorite_count,
+        'retweet_count': status.retweet_count,
+        'entities': {
+            'media': status.entities['media'] if 'media' in status.entities else [],
+            'urls': status.entities['urls'] if 'urls' in status.entities else [],
+            'user_mentions': status.entities['user_mentions'] if 'user_mentions' in status.entities else [],
+            'hashtags': status.entities['hashtags'] if 'hashtags' in status.entities else [],
+            'symbols': status.entities['symbols'] if 'symbols' in status.entities else []
         }
     }
 
@@ -176,7 +176,7 @@ def start_tweet_streaming(company):
     #start stream to listen to company tweets
     global tweet_stream
 
-    tweet_stream.filter(track=[company])
+    tweet_stream.filter(track=[company],languages=['en'])
 
 
 total_positive = 0
