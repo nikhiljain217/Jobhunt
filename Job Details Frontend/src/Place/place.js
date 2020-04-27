@@ -5,6 +5,7 @@ import RentalRecords from './rents'
 import CovidCase from './covid'
 import WikiInfo from './wikiinfo'
 import connect from "react-redux/es/connect/connect";
+import Hobbies from './hobbies';
 
 
 import './Place.css'
@@ -48,7 +49,7 @@ class Place extends Component
             <div className="place-container">
 
                 <PlaceImage place={this.state.urbanArea}/>
-                {console.log(this.state.urbanArea)}
+                
                 <h1>{this.state.city}</h1>
                     
                     <div className = "place-elements">
@@ -70,7 +71,8 @@ class Place extends Component
                         </div>
                     
                 <div className="twitter">
-                
+                {this.state.urbanArea!="" &&
+                <Hobbies latitude={this.state.latLon.latitude} longitude={this.state.latLon.longitude} />}
                 </div>
             </div> 
             </div>

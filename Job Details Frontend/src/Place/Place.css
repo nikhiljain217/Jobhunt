@@ -169,3 +169,18 @@ h1{
     
 }
 
+.activity-heading
+{
+    margin-bottom: 5px;
+}
+
+.activity
+{    display:flex;
+    flex-direction: column;
+    border-radius: 5px;
+    padding:5px;
+    border: solid #ccc 1px;
+    margin-top: 3px;
+}
+
+
