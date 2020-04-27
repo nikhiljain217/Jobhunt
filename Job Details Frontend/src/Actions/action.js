@@ -40,3 +40,12 @@ export const setDescription = description =>
         value:description
     };
 };
+
+
+export const clearTweets = company =>
+{
+    return {
+        type:'CLEAR_FETCHED_TWEETS',
+        value:company
+    };
+};

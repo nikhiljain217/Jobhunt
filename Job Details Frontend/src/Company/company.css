@@ -45,7 +45,7 @@ h1
 .company-elements
 {
     display:grid;
-    grid-template-columns: 44% 25% 25%;
+    grid-template-columns: 40% 25% 31%;
     grid-template-rows: 40% 50% auto;
     column-gap:20px;
     row-gap:20px;
@@ -116,4 +116,19 @@ h1{
     padding:5px 5px;
     overflow:auto;
     border-radius: 10px;
+}
+
+.tweets-body
+{
+    display:flex;
+    flex-direction: column;
+}
+.tweets-heading
+{
+ overflow:hidden;
+}
+
+.tweets
+{
+/* jdkfal */
 }

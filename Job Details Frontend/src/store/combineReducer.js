@@ -3,6 +3,7 @@ import PlaceReducer from './placeReducer';
 import URLReducer from './urlReducer';
 import {combineReducers} from 'redux';
 import TitleReducer from './titleReducer';
+import TweetReducer from './tweetReducer'
 import DescriptionReducer from './descriptionReducer';
 
 const rootReducer = combineReducers({
@@ -10,7 +11,8 @@ const rootReducer = combineReducers({
     title:TitleReducer,
     url:URLReducer,
     description:DescriptionReducer,
-    Place:PlaceReducer
+    Place:PlaceReducer,
+    TweetReducer
 
 });
 

@@ -110,13 +110,16 @@ def construct_tweet(status):
         'favorite_count': status.favorite_count,
         'retweet_count': status.retweet_count,
         'entities': {
-            'media': status.entities['media'] if 'media' in status.entities else [],
+            
             'urls': status.entities['urls'] if 'urls' in status.entities else [],
             'user_mentions': status.entities['user_mentions'] if 'user_mentions' in status.entities else [],
             'hashtags': status.entities['hashtags'] if 'hashtags' in status.entities else [],
             'symbols': status.entities['symbols'] if 'symbols' in status.entities else []
         }
     }
+
+    if 'media' in status.entities:
+            tweet_data['entities']['media']=status.entities['media']
 
     return tweet_data
 
@@ -135,7 +138,7 @@ class TweetStreamListener(tweepy.StreamListener):
 
         #send message on namespace
         tweet = construct_tweet(status)
-        socketio.emit('tweet', jsonpickle.encode([tweet]), namespace='/company_tweets')
+        socketio.emit('tweet', jsonpickle.encode(tweet), namespace='/company_tweets')
 
     def on_error(self, status_code):
 

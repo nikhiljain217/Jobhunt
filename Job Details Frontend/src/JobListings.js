@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import JobCard from './JobCard';
 import './JobListings.css'
 import { useDispatch, useStore } from 'react-redux';
-import {setCompany, setUrl, setTitle,setDescription, setPlace} from './Actions/action';
+import {setCompany, setUrl, setTitle, setPlace,clearTweets} from './Actions/action';
 
 
 
@@ -31,6 +31,7 @@ function JobListings({match}) {
         dispatch(setTitle(objectDic.JobTitle));
         dispatch(setUrl(objectDic.URL));
         dispatch(setPlace(objectDic.Place));
+        dispatch(clearTweets());
 
 
         
