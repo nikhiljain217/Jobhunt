@@ -2,4 +2,4 @@
 Job dashboard.
 
 # Demo
-![] (Quick_Look.gif)
+![](Quick_Look.gif)
