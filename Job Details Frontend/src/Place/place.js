@@ -65,7 +65,8 @@ class Place extends Component
                         <LivingStandard place={this.state.urbanArea} city={this.state.city}/>
                         </div>
                         <div className="corona">
-                        <CovidCase city={this.state.city} state={this.state.stateName} />
+                        {this.state.urbanArea!="" &&
+                        <CovidCase city={this.state.city} state={this.state.stateName} />}
                         </div>
                     
                 <div className="twitter">

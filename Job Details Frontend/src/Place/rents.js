@@ -63,7 +63,7 @@ function RentalRecords({place})
                     },
                     title:'Rents',
                     ticks: {
-                        min: 656,
+                        min: 0,
                         callback: (value, index, values) => {
                             return '$'+value;
                         }

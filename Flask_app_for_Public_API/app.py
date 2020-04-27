@@ -22,6 +22,7 @@ def company_news(name):
         print(url)
         response = requests.get(url).json()
         #pprint(response)
+
         articles = response['articles']
     except Exception as e:
         articles = []
@@ -136,13 +137,31 @@ def covid_case(city, state):
         county = res['hits']['hits'][0]['_source']['county']
 
         res = e.search(index="covid_19",body={"query":{"bool":{"must":[{"match":{"county":county}},{"match":{"state":state}}]}}})
-        print(res)
+        
+
+        
         result = res['hits']['hits'][0]['_source']
+        data=[]
+        tickinterval=round(len(result["dates"])/4)
+        tickValues=[]
+        for index in range(len(result["dates"])):
+            single_dict={}
+            single_dict['x']=result["dates"][index]
+            single_dict['y']=result["cases"][index]
+            if(index%tickinterval==0):
+                tickValues.append(result["dates"][index])
+
+            data.append(single_dict)
+        result["data"]=data
+        result["tickValues"]=tickValues
+        del result["dates"]
+        del result["cases"]
+        
     except Exception as e:
 
         print("The Covid Api have exception ")
         traceback.print_exc()
-        result = {"county":"",   "state":"",   "dates":[], "cases":[], "deaths":[], "total_cases":0, "total_deaths":0}
+        result = {"county":"",   "state":"", "tickValues":[],"deaths":[], "total_cases":0, "total_deaths":0, "data":0}
 
     return Response(response=jsonpickle.encode(result), status=200, mimetype="application/json")
 
@@ -152,7 +171,7 @@ def get_rents(city):
     global uaDict
     try:
         url = "{}details".format(uaDict[city.title()])
-        print(url)
+        
         response = requests.get(url).json()
         response = response['categories']
         temp={}
@@ -165,7 +184,7 @@ def get_rents(city):
         response = temp
         rents = []
         label = []
-        print(response)
+        
         for index in reversed(range(3)):
             label.append(response[index]['label'])
             rents.append(int(response[index]['currency_dollar_value']))

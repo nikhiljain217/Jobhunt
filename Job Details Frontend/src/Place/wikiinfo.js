@@ -17,7 +17,8 @@ function WikiInfo({topic,length})
     {
         const response = await fetch(`http://127.0.0.1:8000/description/${topic}`);
         const data = await response.json();
-        let description = data["description"].substring(0,length);
+        let description = data["description"].replace('\n'," ");
+        description = description.substring(0,length);
         description = description.substring(0,description.lastIndexOf('\.')+1)
         
         setWikiLink(data['url'])
